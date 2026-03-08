@@ -28,7 +28,8 @@
   --shadow: 0 2px 12px rgba(0,0,0,0.08);
   --radius: 16px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button, .tab, .class-item, .pupil-chip, .member-tag, .lucky-past, [data-touch], [data-action] { touch-action: manipulation; cursor: pointer; }
 body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 h1,h2,h3,button,.tab-label { font-family: 'Nunito', sans-serif; }
 
@@ -1114,36 +1115,49 @@ function showToast(msg) {
 }
 
 
-// ===== TOUCH DELEGATION FOR PUPIL CHIPS =====
-// Using event delegation to avoid re-render during touchstart
-document.getElementById('mainContent').addEventListener('touchend', function(e) {
-  const chip = e.target.closest('[data-action]');
-  if (!chip) return;
-  e.preventDefault();
-  const action = chip.dataset.action;
-  const id = chip.dataset.id;
-  if (action === 'zufall-toggle') zufallTogglePupil(id);
-  else if (action === 'bilden-toggle') togglePupil(id);
-}, {passive: false});
-
-document.getElementById('mainContent').addEventListener('click', function(e) {
-  const chip = e.target.closest('[data-action]');
-  if (!chip) return;
-  const action = chip.dataset.action;
-  const id = chip.dataset.id;
-  if (action === 'zufall-toggle') zufallTogglePupil(id);
-  else if (action === 'bilden-toggle') togglePupil(id);
-});
 
 
-// ===== GLOBAL BUTTON TOUCH FIX =====
-// Prevents ontouchstart double-fire and handles fixed-position button issues on iOS
+
+// ===== UNIFIED FAST TOUCH HANDLER =====
+let _tMoved = false;
+
+// Visual feedback on touchstart (instant!)
+document.addEventListener('touchstart', function(e) {
+  _tMoved = false;
+  const el = e.target.closest('[data-touch],[data-action]');
+  if (el) { el._origOpacity = el.style.opacity; el.style.opacity = '0.55'; }
+}, {passive: true});
+
+document.addEventListener('touchmove', function(e) {
+  _tMoved = true;
+  document.querySelectorAll('[data-touch],[data-action]').forEach(el => {
+    el.style.opacity = el._origOpacity || '';
+  });
+}, {passive: true});
+
+// Execute on touchend - no 300ms delay because touch-action:manipulation is set
 document.addEventListener('touchend', function(e) {
+  document.querySelectorAll('[data-touch],[data-action]').forEach(el => {
+    el.style.opacity = el._origOpacity || '';
+  });
+  if (_tMoved) return;
+  // Global buttons
   const btn = e.target.closest('[data-touch]');
-  if (!btn) return;
-  e.preventDefault();
-  const fn = btn.dataset.touch;
-  if (fn && window[fn]) window[fn]();
+  if (btn) {
+    e.preventDefault();
+    const fn = btn.dataset.touch;
+    if (fn && window[fn]) window[fn]();
+    return;
+  }
+  // Pupil chips
+  const chip = e.target.closest('[data-action]');
+  if (chip) {
+    e.preventDefault();
+    const action = chip.dataset.action;
+    const id = chip.dataset.id;
+    if (action === 'zufall-toggle') zufallTogglePupil(id);
+    else if (action === 'bilden-toggle') togglePupil(id);
+  }
 }, {passive: false});
 
 
