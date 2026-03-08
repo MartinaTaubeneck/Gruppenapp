@@ -197,7 +197,7 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
     <div class="header-top">
       <span class="header-icon">👥</span>
       <span class="header-title">Gruppen</span>
-      <span id="syncBadge" class="sync-badge disconnected" onclick="showSyncSheet()" style="cursor:pointer"><span class="sync-dot"></span><span id="syncLabel">Kein Sync</span></span>
+      <span id="syncBadge" class="sync-badge disconnected" onclick="showSyncSheet()" data-touch="showSyncSheet" style="cursor:pointer;min-width:80px;justify-content:center"><span class="sync-dot"></span><span id="syncLabel">Kein Sync</span></span>
       <button class="header-btn" data-touch="showSettings" onclick="showSettings()">⚙️</button>
     </div>
     <div class="tabs">
@@ -312,12 +312,12 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
       <label class="input-label">Freigabecode</label>
       <div style="display:flex;gap:8px">
         <input class="input" id="syncCodeInput" placeholder="z.B. meineschule23" style="flex:1">
-        <button class="btn btn-primary" onclick="startSync()">Start</button>
+        <button class="btn btn-primary" onclick="startSync()" data-touch="startSync">Start</button>
       </div>
     </div>
     <div id="syncStatus" style="font-size:13px;color:var(--text2);margin-bottom:12px"></div>
     <div class="btn-row">
-      <button class="btn btn-danger" onclick="stopSync()">Sync beenden</button>
+      <button class="btn btn-danger" onclick="stopSync()" data-touch="stopSync">Sync beenden</button>
       <button class="btn btn-secondary" onclick="closeSheet('syncSheet')">Schließen</button>
     </div>
   </div>
