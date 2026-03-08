@@ -185,17 +185,17 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
     <div class="header-top">
       <span class="header-icon">👥</span>
       <span class="header-title">Gruppen</span>
-      <button class="header-btn" ontouchstart="showSettings()" onclick="showSettings()">⚙️</button>
+      <button class="header-btn" data-touch="showSettings" onclick="showSettings()">⚙️</button>
     </div>
     <div class="tabs">
-      <button class="tab active" id="tab-klassen" ontouchstart="switchTab('klassen')" onclick="switchTab('klassen')">🏫 Klassen</button>
-      <button class="tab" id="tab-bilden" ontouchstart="switchTab('bilden')" onclick="switchTab('bilden')">🎲 Bilden</button>
-      <button class="tab" id="tab-zufall" ontouchstart="switchTab('zufall')" onclick="switchTab('zufall')">🎯 Zufall</button>
-      <button class="tab" id="tab-verlauf" ontouchstart="switchTab('verlauf')" onclick="switchTab('verlauf')">📋 Verlauf</button>
+      <button class="tab active" id="tab-klassen" data-touch="switchTab('klassen'" onclick="switchTab('klassen')">🏫 Klassen</button>
+      <button class="tab" id="tab-bilden" data-touch="switchTab('bilden'" onclick="switchTab('bilden')">🎲 Bilden</button>
+      <button class="tab" id="tab-zufall" data-touch="switchTab('zufall'" onclick="switchTab('zufall')">🎯 Zufall</button>
+      <button class="tab" id="tab-verlauf" data-touch="switchTab('verlauf'" onclick="switchTab('verlauf')">📋 Verlauf</button>
     </div>
   </div>
   <div id="mainContent"></div>
-  <button class="fab" id="fab" ontouchstart="fabAction()" onclick="fabAction()">＋</button>
+  <button class="fab" id="fab" data-touch="fabAction" onclick="fabAction()">＋</button>
 </div>
 
 <!-- Sheet: Klasse hinzufügen/bearbeiten -->
@@ -222,11 +222,11 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
       <input class="input" id="classNameInput" placeholder="z.B. 5a, Mathe G1, Kurs 3..." maxlength="40">
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" ontouchstart="closeSheet('classSheet')" onclick="closeSheet('classSheet')">Abbrechen</button>
-      <button class="btn btn-primary" ontouchstart="saveClass()" onclick="saveClass()">Speichern</button>
+      <button class="btn btn-secondary" data-touch="closeSheet('classSheet'" onclick="closeSheet('classSheet')">Abbrechen</button>
+      <button class="btn btn-primary" data-touch="saveClass" onclick="saveClass()">Speichern</button>
     </div>
     <div style="margin-top:8px">
-      <button class="btn btn-danger btn-block" id="deleteClassBtn" ontouchstart="deleteClass()" onclick="deleteClass()">🗑 Klasse löschen</button>
+      <button class="btn btn-danger btn-block" id="deleteClassBtn" data-touch="deleteClass" onclick="deleteClass()">🗑 Klasse löschen</button>
     </div>
   </div>
 </div>
@@ -241,8 +241,8 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
       <textarea class="input" id="pupilInput" rows="6" placeholder="Anna&#10;Ben&#10;Clara&#10;David&#10;..."></textarea>
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" ontouchstart="closeSheet('pupilSheet')" onclick="closeSheet('pupilSheet')">Abbrechen</button>
-      <button class="btn btn-primary" ontouchstart="savePupils()" onclick="savePupils()">Hinzufügen</button>
+      <button class="btn btn-secondary" data-touch="closeSheet('pupilSheet'" onclick="closeSheet('pupilSheet')">Abbrechen</button>
+      <button class="btn btn-primary" data-touch="savePupils" onclick="savePupils()">Hinzufügen</button>
     </div>
   </div>
 </div>
@@ -263,12 +263,12 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
           <label class="input-label">Schüler:in 2</label>
           <select class="input" id="conflict2"></select>
         </div>
-        <button class="btn btn-primary" style="padding:12px" ontouchstart="addConflict()" onclick="addConflict()">＋</button>
+        <button class="btn btn-primary" style="padding:12px" data-touch="addConflict" onclick="addConflict()">＋</button>
       </div>
     </div>
     <div id="conflictList" class="pair-list"></div>
     <div style="margin-top:14px">
-      <button class="btn btn-secondary btn-block" ontouchstart="closeSheet('conflictSheet')" onclick="closeSheet('conflictSheet')">Schließen</button>
+      <button class="btn btn-secondary btn-block" data-touch="closeSheet('conflictSheet'" onclick="closeSheet('conflictSheet')">Schließen</button>
     </div>
   </div>
 </div>
@@ -282,8 +282,8 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
       <input class="input" id="renameInput" placeholder="Gruppenname...">
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" ontouchstart="closeSheet('renameSheet')" onclick="closeSheet('renameSheet')">Abbrechen</button>
-      <button class="btn btn-primary" ontouchstart="confirmRename()" onclick="confirmRename()">Speichern</button>
+      <button class="btn btn-secondary" data-touch="closeSheet('renameSheet'" onclick="closeSheet('renameSheet')">Abbrechen</button>
+      <button class="btn btn-primary" data-touch="confirmRename" onclick="confirmRename()">Speichern</button>
     </div>
   </div>
 </div>
@@ -380,14 +380,14 @@ function renderKlassen() {
     html = `<div class="empty"><div class="empty-icon">🏫</div><div class="empty-text">Noch keine Klassen.<br>Tippe ＋ um zu beginnen!</div></div>`;
   } else {
     state.classes.forEach(cls => {
-      html += `<div class="class-item" ontouchstart="selectClass('${cls.id}')" onclick="selectClass('${cls.id}')">
+      html += `<div class="class-item" data-touch="selectClass('${cls.id}'" onclick="selectClass('${cls.id}')">
         <span class="class-emoji">${cls.emoji}</span>
         <div class="class-info">
           <div class="class-name">${cls.name}</div>
           <div class="class-count">${cls.pupils.length} Schüler:innen</div>
         </div>
         <div class="class-actions">
-          <button class="icon-btn" ontouchstart="editClass(event,'${cls.id}')" onclick="editClass(event,'${cls.id}')">✏️</button>
+          <button class="icon-btn" data-touch="editClass(event,'${cls.id}'" onclick="editClass(event,'${cls.id}')">✏️</button>
           <span style="color:var(--text3);font-size:20px">›</span>
         </div>
       </div>`;
@@ -406,10 +406,10 @@ function renderClassDetail(main) {
   const cls = state.classes.find(c => c.id === state.activeClassId);
   if (!cls) { state.activeView = 'classList'; renderAll(); return; }
   let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-    <button class="btn btn-secondary" style="padding:8px 14px;font-size:13px" ontouchstart="backToList()" onclick="backToList()">‹ Zurück</button>
+    <button class="btn btn-secondary" style="padding:8px 14px;font-size:13px" data-touch="backToList" onclick="backToList()">‹ Zurück</button>
     <span style="font-size:20px">${cls.emoji}</span>
     <span style="font-size:18px;font-weight:900;flex:1">${cls.name}</span>
-    <button class="icon-btn" ontouchstart="openClassSheet('${cls.id}')" onclick="openClassSheet('${cls.id}')">✏️</button>
+    <button class="icon-btn" data-touch="openClassSheet('${cls.id}'" onclick="openClassSheet('${cls.id}')">✏️</button>
   </div>`;
 
   if (cls.pupils.length === 0) {
@@ -419,7 +419,7 @@ function renderClassDetail(main) {
     cls.pupils.forEach(p => {
       html += `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--card);border-radius:12px;box-shadow:var(--shadow)">
         <span style="flex:1;font-weight:600">${p.name}</span>
-        <button class="icon-btn" ontouchstart="deletePupil(event,'${cls.id}','${p.id}')" onclick="deletePupil(event,'${cls.id}','${p.id}')">🗑</button>
+        <button class="icon-btn" data-touch="deletePupil(event,'${cls.id}','${p.id}'" onclick="deletePupil(event,'${cls.id}','${p.id}')">🗑</button>
       </div>`;
     });
     html += `</div>`;
@@ -550,25 +550,25 @@ function renderBilden() {
   html += `<div class="card">
     <div class="card-title">⚙️ Einteilung</div>
     <div class="seg">
-      <button class="seg-btn ${state.bildMode === 'size' ? 'active' : ''}" ontouchstart="setBildMode('size')" onclick="setBildMode('size')">Nach Größe</button>
-      <button class="seg-btn ${state.bildMode === 'count' ? 'active' : ''}" ontouchstart="setBildMode('count')" onclick="setBildMode('count')">Nach Anzahl</button>
+      <button class="seg-btn ${state.bildMode === 'size' ? 'active' : ''}" data-touch="setBildMode('size'" onclick="setBildMode('size')">Nach Größe</button>
+      <button class="seg-btn ${state.bildMode === 'count' ? 'active' : ''}" data-touch="setBildMode('count'" onclick="setBildMode('count')">Nach Anzahl</button>
     </div>`;
   if (state.bildMode === 'size') {
     const groupCount = present.length > 0 ? Math.ceil(present.length / state.bildSize) : 0;
     html += `<label class="input-label">Schüler:innen pro Gruppe</label>
     <div class="stepper">
-      <button class="stepper-btn" ontouchstart="setBildSize(-1)" onclick="setBildSize(-1)">−</button>
+      <button class="stepper-btn" data-touch="setBildSize(-1" onclick="setBildSize(-1)">−</button>
       <span class="stepper-val">${state.bildSize}</span>
-      <button class="stepper-btn" ontouchstart="setBildSize(1)" onclick="setBildSize(1)">＋</button>
+      <button class="stepper-btn" data-touch="setBildSize(1" onclick="setBildSize(1)">＋</button>
     </div>
     <div style="font-size:13px;color:var(--text2);margin-top:8px">→ ergibt ca. <b>${groupCount}</b> Gruppe${groupCount !== 1 ? 'n' : ''}</div>`;
   } else {
     const sizeApprox = present.length > 0 ? Math.ceil(present.length / state.bildCount) : 0;
     html += `<label class="input-label">Anzahl Gruppen</label>
     <div class="stepper">
-      <button class="stepper-btn" ontouchstart="setBildCount(-1)" onclick="setBildCount(-1)">−</button>
+      <button class="stepper-btn" data-touch="setBildCount(-1" onclick="setBildCount(-1)">−</button>
       <span class="stepper-val">${state.bildCount}</span>
-      <button class="stepper-btn" ontouchstart="setBildCount(1)" onclick="setBildCount(1)">＋</button>
+      <button class="stepper-btn" data-touch="setBildCount(1" onclick="setBildCount(1)">＋</button>
     </div>
     <div style="font-size:13px;color:var(--text2);margin-top:8px">→ ca. <b>${sizeApprox}</b> pro Gruppe</div>`;
   }
@@ -578,7 +578,7 @@ function renderBilden() {
   html += `<div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <div class="card-title" style="margin:0">🚫 Nicht zusammen</div>
-      <button class="btn btn-secondary" style="padding:6px 12px;font-size:13px" ontouchstart="openConflictSheet()" onclick="openConflictSheet()">Bearbeiten</button>
+      <button class="btn btn-secondary" style="padding:6px 12px;font-size:13px" data-touch="openConflictSheet" onclick="openConflictSheet()">Bearbeiten</button>
     </div>
     ${conflicts.length > 0 ? `<div style="margin-top:8px;font-size:13px;color:var(--text2)">${conflicts.length} Paar${conflicts.length !== 1 ? 'e' : ''} definiert</div>` : `<div style="margin-top:8px;font-size:13px;color:var(--text3)">Keine Einschränkungen</div>`}
   </div>`;
@@ -589,7 +589,7 @@ function renderBilden() {
     state.lastGroups.forEach((grp, gi) => {
       html += `<div class="group-card" id="grp-${gi}">
         <div class="group-header">
-          <span class="group-header-name" ontouchstart="openRenameSheet(${gi})" onclick="openRenameSheet(${gi})">${grp.name} ✏️</span>
+          <span class="group-header-name" data-touch="openRenameSheet(${gi}" onclick="openRenameSheet(${gi})">${grp.name} ✏️</span>
           <span class="group-header-count">${grp.members.length} Personen</span>
         </div>
         <div class="group-members" id="members-${gi}" 
@@ -601,13 +601,13 @@ function renderBilden() {
         html += `<div class="member-tag" draggable="true" 
           id="mtag-${gi}-${mi}"
           ondragstart="onDragStart(event,${gi},'${m}')"
-          ontouchstart="onTagTouchStart(event,${gi},'${m}')">
+          data-touch="onTagTouchStart(event,${gi},'${m}'">
           ${m}
         </div>`;
       });
       html += `</div></div>`;
     });
-    html += `<button class="btn btn-secondary btn-block" style="margin-top:4px" ontouchstart="saveToHistory()" onclick="saveToHistory()">💾 In Verlauf speichern</button>`;
+    html += `<button class="btn btn-secondary btn-block" style="margin-top:4px" data-touch="saveToHistory" onclick="saveToHistory()">💾 In Verlauf speichern</button>`;
   }
 
   main.innerHTML = html;
@@ -827,7 +827,7 @@ function renderConflictList(cls) {
     const nameA = cls.pupils.find(p => p.id === c.a)?.name || '?';
     const nameB = cls.pupils.find(p => p.id === c.b)?.name || '?';
     return `<div class="pair-item"><span style="flex:1"><b>${nameA}</b> & <b>${nameB}</b></span>
-      <button class="icon-btn" ontouchstart="removeConflict(${i})" onclick="removeConflict(${i})">🗑</button></div>`;
+      <button class="icon-btn" data-touch="removeConflict(${i}" onclick="removeConflict(${i})">🗑</button></div>`;
   }).join('');
 }
 
@@ -911,16 +911,16 @@ function renderZufall() {
     <div class="lucky-sub">${remaining.length} noch nicht dran • ${zufallState.history.length} bereits gewählt</div>
   </div>`;
 
-  html += `<button class="lucky-btn" ontouchstart="pickRandom()" onclick="pickRandom()">🎯 Zufallsperson wählen</button>`;
+  html += `<button class="lucky-btn" data-touch="pickRandom" onclick="pickRandom()">🎯 Zufallsperson wählen</button>`;
 
   if (zufallState.history.length > 0) {
     html += `<div class="section-label">Bereits dran gewesen <span style="font-size:11px;font-weight:600;color:var(--text3)">(tippen zum Entfernen)</span></div>
     <div class="lucky-history">`;
     zufallState.history.forEach((name, i) => {
-      html += `<span class="lucky-past" style="cursor:pointer" ontouchstart="removeFromHistory(${i})" onclick="removeFromHistory(${i})">✓ ${name} ×</span>`;
+      html += `<span class="lucky-past" style="cursor:pointer" data-touch="removeFromHistory(${i}" onclick="removeFromHistory(${i})">✓ ${name} ×</span>`;
     });
     html += `</div>
-    <button class="btn btn-secondary btn-block" style="margin-top:12px" ontouchstart="resetZufall()" onclick="resetZufall()">🔄 Alle zurücksetzen</button>`;
+    <button class="btn btn-secondary btn-block" style="margin-top:12px" data-touch="resetZufall" onclick="resetZufall()">🔄 Alle zurücksetzen</button>`;
   }
 
   main.innerHTML = html;
@@ -1027,7 +1027,7 @@ function renderVerlauf() {
     main.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Noch kein Verlauf.<br>Gruppen bilden und speichern!</div></div>`;
     return;
   }
-  let html = `<button class="btn btn-danger btn-block" style="margin-bottom:16px" ontouchstart="clearHistory()" onclick="clearHistory()">🗑 Verlauf löschen</button>`;
+  let html = `<button class="btn btn-danger btn-block" style="margin-bottom:16px" data-touch="clearHistory" onclick="clearHistory()">🗑 Verlauf löschen</button>`;
   state.history.forEach(entry => {
     html += `<div class="history-item">
       <div class="history-date">${entry.date}</div>
@@ -1099,6 +1099,17 @@ document.getElementById('mainContent').addEventListener('click', function(e) {
   if (action === 'zufall-toggle') zufallTogglePupil(id);
   else if (action === 'bilden-toggle') togglePupil(id);
 });
+
+
+// ===== GLOBAL BUTTON TOUCH FIX =====
+// Prevents ontouchstart double-fire and handles fixed-position button issues on iOS
+document.addEventListener('touchend', function(e) {
+  const btn = e.target.closest('[data-touch]');
+  if (!btn) return;
+  e.preventDefault();
+  const fn = btn.dataset.touch;
+  if (fn && window[fn]) window[fn]();
+}, {passive: false});
 
 // ===== INIT =====
 load();
