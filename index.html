@@ -202,10 +202,10 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
       <button class="header-btn" data-touch="showSettings" onclick="showSettings()">⚙️</button>
     </div>
     <div class="tabs">
-      <button class="tab active" id="tab-klassen" data-touch="switchTab('klassen'" onclick="switchTab('klassen')">🏫 Klassen</button>
-      <button class="tab" id="tab-bilden" data-touch="switchTab('bilden'" onclick="switchTab('bilden')">🎲 Bilden</button>
-      <button class="tab" id="tab-zufall" data-touch="switchTab('zufall'" onclick="switchTab('zufall')">🎯 Zufall</button>
-      <button class="tab" id="tab-verlauf" data-touch="switchTab('verlauf'" onclick="switchTab('verlauf')">📋 Verlauf</button>
+      <button class="tab active" id="tab-klassen" data-tab="klassen">🏫 Klassen</button>
+      <button class="tab" id="tab-bilden" data-tab="bilden">🎲 Bilden</button>
+      <button class="tab" id="tab-zufall" data-tab="zufall">🎯 Zufall</button>
+      <button class="tab" id="tab-verlauf" data-tab="verlauf">📋 Verlauf</button>
     </div>
   </div>
   <div id="mainContent"></div>
@@ -1124,20 +1124,20 @@ let _tMoved = false;
 // Visual feedback on touchstart (instant!)
 document.addEventListener('touchstart', function(e) {
   _tMoved = false;
-  const el = e.target.closest('[data-touch],[data-action]');
+  const el = e.target.closest('[data-touch],[data-action],[data-tab]');
   if (el) { el._origOpacity = el.style.opacity; el.style.opacity = '0.55'; }
 }, {passive: true});
 
 document.addEventListener('touchmove', function(e) {
   _tMoved = true;
-  document.querySelectorAll('[data-touch],[data-action]').forEach(el => {
+  document.querySelectorAll('[data-touch],[data-action],[data-tab]').forEach(el => {
     el.style.opacity = el._origOpacity || '';
   });
 }, {passive: true});
 
 // Execute on touchend - no 300ms delay because touch-action:manipulation is set
 document.addEventListener('touchend', function(e) {
-  document.querySelectorAll('[data-touch],[data-action]').forEach(el => {
+  document.querySelectorAll('[data-touch],[data-action],[data-tab]').forEach(el => {
     el.style.opacity = el._origOpacity || '';
   });
   if (_tMoved) return;
@@ -1147,6 +1147,13 @@ document.addEventListener('touchend', function(e) {
     e.preventDefault();
     const fn = btn.dataset.touch;
     if (fn && window[fn]) window[fn]();
+    return;
+  }
+  // Tab buttons
+  const tab = e.target.closest('[data-tab]');
+  if (tab) {
+    e.preventDefault();
+    switchTab(tab.dataset.tab);
     return;
   }
   // Pupil chips
